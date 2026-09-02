@@ -7,9 +7,8 @@ import numpy as np
 import pickle
 import threading
 import queue
-import csv  # For CSV sniffing/robust reading
-import io  # For reading strings like a file
-
+import csv 
+import io  
 
 class ExcelClassifierApp:
     def __init__(self, root):
@@ -17,7 +16,7 @@ class ExcelClassifierApp:
         self.root.title("Excel Classifier Viewer")
 
         try:
-            # self.root.iconphoto(True, tk.PhotoImage(file='your_icon.png'))
+           
             pass
         except tk.TclError:
             print("Icon not found. Using default icon.")
@@ -26,23 +25,18 @@ class ExcelClassifierApp:
 
         self.style = ttk.Style()
 
-        # --- THEME LOGIC ---
+      
         self.current_theme = "light"
         self.setup_themes()
         self.style.theme_use(self.current_theme)
-        # --- END THEME ---
 
-        # --- Menu Bar Setup ---
         self.current_job_file_path = None
         self.setup_menu_bar()
-        # --- END Menu ---
-
-        # --- Sidebar (Right Frame) Setup ---
         self.right_frame = ttk.Frame(self.root, width=200)
         self.right_frame.pack(side=tk.RIGHT, fill=tk.Y, padx=10, pady=10)
         self.right_frame.pack_propagate(False)
 
-        # --- Sidebar Toggle Frame & Button ---
+        
         self.sidebar_toggle_frame = ttk.Frame(self.root, width=20)
         self.sidebar_toggle_frame.pack(side=tk.RIGHT, fill=tk.Y, pady=10)
 
@@ -54,7 +48,7 @@ class ExcelClassifierApp:
             width=2
         )
         self.sidebar_toggle_button.pack(side=tk.LEFT, fill=tk.Y)
-        # --- END Toggle ---
+        
 
         self.main_frame = ttk.Frame(self.root)
         self.main_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=(10, 0))  # Reduced bottom padding
@@ -139,12 +133,12 @@ class ExcelClassifierApp:
         hsb.pack(side='bottom', fill='x')
         self.tree.pack(fill=tk.BOTH, expand=True)
 
-        # --- Status Bar Frame ---
+        
         self.status_bar_frame = ttk.Frame(self.root, height=20, relief=tk.SUNKEN)
         self.status_bar_frame.pack(side=tk.BOTTOM, fill=tk.X)
         self.status_label = ttk.Label(self.status_bar_frame, text="Ready.", anchor=tk.W)
         self.status_label.pack(fill=tk.X, padx=10, pady=2)
-        # --- END Status Bar ---
+        
 
         self.full_df = None
         self.original_df = None
@@ -157,25 +151,24 @@ class ExcelClassifierApp:
         self.current_mpin_group_filter = "All"
         self.board_list = []
 
-        # New: Search state for Ctrl+F
+        
         self.search_term_var = tk.StringVar()
         self.current_search_query = ""
         self.search_window = None  # To track the popup
 
-        # The core columns expected from a TRD-style file
+        
         self.trd_columns = [
             "Board", "Step", "ID", "Style", "Part", "Remark", "ACT", "STD", "Tst",
             "HL", "LL", "A", "B", "EA", "EB", "LC", "Result"
         ]
 
-        # All columns including internal and computed ones (es_remarks added here)
+        
         self.all_columns = self.trd_columns + [
             "Classification", "Override", "Is_Grouped", "Parallel", "Coverage",
             "Pin_Type", "MPin_Group", "es_remarks"
         ]
 
-        # --- Config data instances ---
-        # RefDes prefixes are used to determine the category in _get_component_category
+        
         self.summary_config_data = [
             ("Resistor", "R"),
             ("Capacitor", "C"),
